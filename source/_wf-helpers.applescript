@@ -6,7 +6,7 @@ Along with some custom code for dealing with simple JSON settings files (no nest
 
 on get_path()
 	set {tid, AppleScript's text item delimiters} to {AppleScript's text item delimiters, "/"}
-	set _path to (text items 1 thru -2 of (POSIX path of (path to me)) as string) & "/"
+	set _path to (text items 1 thru -3 of (POSIX path of (path to me)) as string) & "/"
 	set AppleScript's text item delimiters to tid
 	
 	if my q_is_empty(_path) then return missing value
@@ -95,14 +95,20 @@ end mdfind
 
 (* JSON *)
 
-on read_json(json_)
+on read_json(json_, path_)
+	if path_ = true then
+		set the file_ to open for access file json_
+		set json_ to (read file_)
+		close access file_
+	end if
+	
 	-- simplify JSON
 	set {astid, AppleScript's text item delimiters} to {AppleScript's text item delimiters, {return & linefeed, return, linefeed, tab, character id 8233, character id 8232, ":", "\"", ",", "{", "}"}}
 	set json_l to text items of json_
 	set AppleScript's text item delimiters to astid
 	
 	-- remove empty items
-	set itemsToDelete to {"", " ", "    ", "  ", " ", "        ", "      "}
+	set itemsToDelete to {"", " ", "    ", "  ", " ", "        ", "      ", "   "}
 	set cleanList to {}
 	repeat with i from 1 to count json_l
 		if {json_l's item i} is not in itemsToDelete then set cleanList's end to json_l's item i
@@ -135,6 +141,35 @@ on list2record(_list, val_type)
 		return rec
 	end if
 end list2record
+
+on write_json(k_v, path_)
+	set json to ""
+	repeat with i from 1 to count k_v
+		set kv to (item i of k_v)
+		if i = 1 then
+			set l to "{" & return & tab & "\"" & (item 1 of kv) & "\": \"" & (item 2 of kv) & "\","
+			set json to json & l
+		else if i > 1 and i < (count k_v) then
+			set l to return & tab & "\"" & (item 1 of kv) & "\": \"" & (item 2 of kv) & "\","
+			set json to json & l
+		else if i = (count k_v) then
+			set l to return & tab & "\"" & (item 1 of kv) & "\": \"" & (item 2 of kv) & "\"" & return & "}"
+			set json to json & l
+		end if
+	end repeat
+	
+	---Write the data to the settings file
+	try
+		set the file_ to open for access file path_ with write permission
+		set eof of file_ to 0
+		write json to file_
+		close access the file_
+		return true
+	on error
+		return false
+	end try
+end write_json
+
 
 
 (* HANDLERS *)
