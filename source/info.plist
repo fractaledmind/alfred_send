@@ -122,7 +122,7 @@
 	<key>createdby</key>
 	<string>Stephen Margheim</string>
 	<key>description</key>
-	<string>Send documents to the cloud (v. 1.1)</string>
+	<string>Send documents to the cloud (v. 1.2)</string>
 	<key>disabled</key>
 	<false/>
 	<key>name</key>
@@ -209,13 +209,15 @@ osascript config.scpt "{query}"
 				<false/>
 				<key>modsmode</key>
 				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
 			<string>7051CDFD-2C10-4DA2-8DFC-7495E135E33B</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
@@ -310,13 +312,15 @@ osascript config.scpt "{query}"
 				<false/>
 				<key>modsmode</key>
 				<integer>0</integer>
+				<key>relatedAppsMode</key>
+				<integer>0</integer>
 			</dict>
 			<key>type</key>
 			<string>alfred.workflow.trigger.hotkey</string>
 			<key>uid</key>
 			<string>9F3D4658-F0B7-498D-B1C3-22728FAF7175</string>
 			<key>version</key>
-			<integer>0</integer>
+			<integer>1</integer>
 		</dict>
 		<dict>
 			<key>config</key>
